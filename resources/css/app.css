@@ -5,3 +5,7 @@
 .veliki{
     font-size: xx-large;
 }
+
+.spinner{
+    position: absolute;
+}
