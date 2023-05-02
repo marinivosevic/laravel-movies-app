@@ -8,7 +8,14 @@
         placeholder="Search for anything..."
         @focus = "isOpen = true"
         @keydown.escape.window = "isOpen = false"
+        @keydown = "isOpen = true"
         @keydown.shift.tab = "isOpen = false"
+        x-ref = "search"
+        @keydown.window = "
+            if(event.keycode === 191){
+                $refs.search.focus();
+        }"
+        
           
         >
     <div class="absolute top-0">
@@ -27,7 +34,7 @@
         
     
         <div class="z-50 absolute bg-gray-800 text-sm rounded w-64 mt-4 "
-            x-show = "isOpen"
+            x-show.transition.opacity = "isOpen"
             
             
         >
