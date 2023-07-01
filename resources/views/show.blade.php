@@ -4,7 +4,7 @@
     <div class="movie-info border-b border-gray-800">
         <div class="container mx-auto px-4 py-16 flex flex-col md:flex-row">
             <div class="flex-none">
-                <img src="{{ 'https://image.tmdb.org/t/p/w500/' . $movie['poster_path'] }}" alt="antman"
+                <img src="{{ $movie['poster_path'] }}" alt="antman"
                     style="width: 24rem">
             </div>
 
@@ -12,16 +12,12 @@
                 <h2 class="text-4xl mt-4 md:mt-0 font-semibold">{{ $movie['title'] }}</h2>
                 <div class="flex flex-wrap item-center text-gray-400">
                     <span>star</span>
-                    <span class="ml-1 text-orange-500">{{ $movie['vote_average'] * 10 }}%</span>
+                    <span class="ml-1 text-orange-500">{{ $movie['vote_average']  }}</span>
                     <span class="mx-2">|</span>
-                    <span>{{ \Carbon\Carbon::parse($movie['release_date'])->format('M d, Y') }}</span>
+                    <span>{{ ($movie['release_date']) }}</span>
                     <span class="mx-2">|</span>
                     <div class="text-gray-400">
-                        @foreach ($movie['genres'] as $genre)
-                            {{ $genre['name'] }}@if (!$loop->last)
-                                ,
-                            @endif
-                        @endforeach
+                         <span>{{$movie['genres']}}</span>
                     </div>
                 </div>
                 <p class="text-gray-300 mt-8">
@@ -32,13 +28,14 @@
                         Fetured Cast
                     </h4>
                     <div class="flex mt-4">
-                        @foreach ($movie['credits']['crew'] as $crew)
-                            @if ($loop->index < 2)
+                        @foreach ($movie['crew'] as $crew)
+                            
                                 <div class="mr-8">
                                     <div>{{ $crew['name'] }}</div>
                                     <div class="text-sm text-gray-400">{{ $crew['job'] }}</div>
                                 </div>
-                            @endif
+                            
+                            
                         @endforeach
 
 
@@ -93,8 +90,8 @@
             <h2 class="text-4xl font-semibold">Cast</h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-                @foreach ($movie['credits']['cast'] as $cast)
-                    @if ($loop->index < 5)
+                @foreach ($movie['cast'] as $cast)
+                   
                         <div class="mt-8">
                             <a href="/movie">
                                 <img src="{{ 'https://image.tmdb.org/t/p/w300/' . $cast['profile_path'] }}" alt="parasite"
@@ -108,7 +105,7 @@
                                 {{ $cast['character'] }}
                             </div>
                         </div>
-                    @endif
+                        
                 @endforeach
             </div>
         </div>
@@ -118,8 +115,8 @@
         <div class="container mx-auto px-4 py-16">
             <h2 class="text-4xl font-semibold">Images</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8">
-                @foreach ($movie['images']['backdrops'] as $image)
-                    @if ($loop->index < 9)
+                @foreach ($movie['images'] as $image)
+                    
                         <div class="mt-8">
                             <a 
                                 href="#" 
@@ -135,7 +132,7 @@
                             </a>
 
                         </div>
-                    @endif
+                    
                 @endforeach
                 <div
                 style="background-color: rgba(0, 0, 0, .5);"

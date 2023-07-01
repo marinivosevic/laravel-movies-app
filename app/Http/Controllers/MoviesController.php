@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ViewModels\HomepageViewModel;
+use App\ViewModels\MoviesViewModel;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
@@ -15,23 +17,31 @@ class MoviesController extends Controller
         $popularMovies = Http::get('https://api.themoviedb.org/3/movie/popular?api_key=127273cacb36beb46e5c3162f6e04643')
         ->json()['results'];
         
-        $genresArray = Http::get('https://api.themoviedb.org/3/genre/movie/list?api_key=127273cacb36beb46e5c3162f6e04643')
+        $genres = Http::get('https://api.themoviedb.org/3/genre/movie/list?api_key=127273cacb36beb46e5c3162f6e04643')
         ->json()['genres'];
         
         $nowPlayingMovies = Http::get('https://api.themoviedb.org/3/movie/now_playing?api_key=127273cacb36beb46e5c3162f6e04643')
         ->json()['results'];
         
-         $genres = collect($genresArray)->mapWithKeys(function ($genre){
+         /* $genres = collect($genresArray)->mapWithKeys(function ($genre){
             return [$genre['id'] => $genre['name']];
-        });
+        }); */
         
         
 
-        return view('index',[
+        /* return view('index',[
             'popularMovies' => $popularMovies,
             'genres' => $genres,
             'nowPlayingMovies'=> $nowPlayingMovies,
-        ]);
+        ]); */
+
+        $viewModel = new HomepageViewModel(
+            $popularMovies,
+            $nowPlayingMovies,
+            $genres,
+        );
+        
+        return view('index',$viewModel);
     }
 
     /**
@@ -58,10 +68,9 @@ class MoviesController extends Controller
         $movie = Http::get('https://api.themoviedb.org/3/movie/'.$id.'?api_key=127273cacb36beb46e5c3162f6e04643&append_to_response=credits,videos,images')
         ->json();
         
+        $viewModel = new MoviesViewModel($movie);
         
-        return view('show', [
-            'movie' => $movie,
-        ]);
+        return view('show',$viewModel);
 
         
 
